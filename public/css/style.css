@@ -56,6 +56,10 @@ body {
     align-items: center;
 }
 
+.login-container.login-failed {
+    height: 450px;
+}
+
 .logo-container {
     margin: 22px 0 12px;
     text-align: center;
@@ -93,7 +97,7 @@ input::placeholder {
 }
 
 .login-button {
-    background-color: #0095f6;
+    background-color: #ADD8E6;
     border: none;
     border-radius: 8px;
     color: #fff;
@@ -105,6 +109,32 @@ input::placeholder {
     height: 32px;
 }
 
+.login-button {
+    color: #ADD8E6;
+    cursor: not-allowed;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+  }
+  
+  .login-button.enabled {
+    background-color: #007bff;
+    opacity: 1;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .login-button:disabled {
+    background-color: #007bff;
+    color: #fff;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  
+  .login-button:hover:enabled {
+    background-color: #0056b3;
+  }
+
+  
 .separator {
     display: flex;
     align-items: center;
@@ -148,6 +178,10 @@ input::placeholder {
     margin-top: 12px;
     text-decoration: none;
     display: block;
+}
+
+.forgot-password.login-failed{
+    margin-top: 0px;
 }
 
 .signup-container {
@@ -296,4 +330,15 @@ input::placeholder {
 
 .hidden {
     opacity: 0;
+}
+
+.error-message {
+    font-size: 15px;
+    width: 250px;
+    height: 50px;
+    color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    text-align: center;       
 }
