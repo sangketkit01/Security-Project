@@ -12,6 +12,9 @@ class LoginController extends Controller
     function index(){
         return view("index");
     }
+    function facebook(){ //ทดลอง
+        return view("facebook");
+    }
 
     function login(Request $request){
         $username = escapeshellarg($request->username);
